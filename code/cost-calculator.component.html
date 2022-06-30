@@ -1,0 +1,19 @@
+<ng-container *ngIf="vm$ | async as vm">
+
+  <div>
+    Product Type: {{vm.productType}}
+  </div>
+
+  <div>
+    Cost Per Gallon : {{vm.costPerGallon}}
+  </div>
+
+ <div>
+   Gallons to purchase : {{vm.gallonsToPurchase}}
+ </div>
+
+  <div>
+    Total Cost : {{vm.totalCost}}
+ </div>
+
+</ng-container>

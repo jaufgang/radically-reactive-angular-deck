@@ -5,141 +5,201 @@ import {
 } from "code-surfer";
 import { github, vsDark } from "@code-surfer/themes";
 
+
+import split from './static/split-personality.jpg';
+import observableAllTheThings from './static/observable-all-the-things.png';
+import insight from './static/insight.png';
+import omgIWantIt from './static/omg-i-want-it.jpeg';
+import rubeGoldbergMechanical from './static/rube-goldberg-machine-mechanical.png'
+import rubeGoldbergFluid from './static/rube-goldberg-machine-fluid.jpeg'
+import declarationDefinition from './static/declaration-definition.jpeg'
+import noHalfMeasures from './static/no-half-measures.jpeg'
+import subscribe from './static/subscribe.png'
+
 export const theme = vsDark;
 
-# Hello 👋
 
-You are using [MDX Deck](https://github.com/jxnblk/mdx-deck) and [Code Surfer](https://codesurfer.pomb.us)
+# Radically Reactive Angular
+
+Joey Aufgang
+
+Technical Lead, CX Mobile
+
+---
+
+# Is this _really_ radical?  You decide.
+
+<Appear>
+
+### Rejected names:
+
+- Really Reactive
+- Robustly Reactive
+- Relentlessly Reactive
+- Refreshingly Reactive
+- Rewardingly Reactive
+
+</Appear>
+
+---
+
+# These opinions are my own
+
+- We use these patterns consistently in CX Mobile
+- It works well for us
+- No mandate to use this for CX Portal / PX Portal etc.
+- I personally think any project can benefit from using these patterns
+
+---
+
+# What do I mean by _Radically Reactive_?
+
+<Appear>
+
+An opinionated code style for Angular apps that:
+
+- Uses reactive patterns consistently everywhere throughout the app
+- Banishes the use of non-reactive code patterns
+- Uses ComponentStore to support this pattern
+
+</Appear>
+
+---
+
+# Is this really radical?
+
+<Appear>
+
+I'm not claiming to have invented anything new here.
+
+Fusion of ideas I've picked up from:
+
+- Victor Savkin - [Managing State in Angular Applications](https://blog.nrwl.io/managing-state-in-angular-applications-22b75ef5625f)
+- Deborah Kurata - [Data Composition with RxJS](https://www.youtube.com/watch?v=Z76QlSpYcck)
+- Alex Okrushko et. al. - [ComponentStore](https://ngrx.io/guide/component-store)
+
+> "Observable All The Things" -  Deborah Kurata
+
+</Appear>
+
+---
+
+<img src={observableAllTheThings} />
+
+---
+# What are my goals <br/> for this presentation?
+
+
+<CodeSurferColumns>
+
+<Steps>
+
+<ul>
+  <li>Developing a better understanding of reactive programming and it's benefits</li>
+  <li>More about <em>why</em> than <em>how</em></li>
+  <li>Inspire you to want to learn more and try it out</li>
+</ul>
+
+<img src={omgIWantIt} />
+
+</Steps>
+
+</CodeSurferColumns>
+
+Will skim over a lot of material quickly.
+
+---
+
+# What is reactive programming?
+
+<Appear>
+
+> "In computing, reactive programming is a declarative _programming paradigm_ concerned with data streams and the _propagation of change_."<br/>
+\- https://en.wikipedia.org/wiki/Reactive_programming
+
+</Appear>
+
+---
+
+# What does it mean that "reactive" <br/> is a _programming paradigm_?
+
+<Appear>
+
+### It represents a _style_ of programming that is<br/>conceptually distinct from traditional imperative style
+
+- Not just for dealing with asynchronous data requests, etc.
+- Entire apps can be built using reactive patterns
+
+</Appear>
+
+---
+
+# What do we mean by <br/> _propogation of change_?
+
+<Appear>
+
+###  _Dependent_ or _derived_ values update themselves automatically
+
+- _Independent_ means can't be calculated from other values.
+  - Data comes from user input, APIs, read from filesystem, etc.
+- _Dependent_ means calculated from other values
+
+
+(Kind of like the way [spreadsheet](https://cisco-my.sharepoint.com/:x:/p/jaufgang/EYDEqkxfvVRLmW7IuCKMGc4Bo1D_QC7aRWp2OJBjTFZD5Q) cells with <br/>formulas and cell references update themselves)
+
+</Appear>
+
+---
+
+## In concrete terms,<br/> in the context of Angular,<br/>reactive programming means:
+
+<Appear>
+
+- Using RxJS
+
+</Appear>
+
+---
+
+# I know what you're thinking
+
+<Appear>
+
+### "But we already use RxJS throughout the apps that we build!"
+
+- Do we  use it everywhere or only when data is handed to us as observable?
+- How do we handle a mixture of observable and non-observable data in a component?
+  - Subscribe to the observable and write the value to a non-observable property?
+  - Or immediately make the non-observable data observable
+
+</Appear>
+
+---
+
+# Let's see an example
 
 ---
 
 <CodeSurfer>
 
-```js title="This is a title" subtitle="and this a subtitle"
-function lorem(ipsum, dolor = 1) {
-  const sit = ipsum == null ? 0 : ipsum.sit;
-  dolor = sit - amet(dolor);
-  return sit
-    ? consectetur(ipsum, 0, dolor < 0 ? 0 : dolor)
-    : [];
-}
-
-function incididunt(ipsum, ut = 1) {
-  ut = labore.et(amet(ut), 0);
-  const sit = ipsum == null ? 0 : ipsum.sit;
-
-  if (!sit || ut < 1) {
-    return [];
-  }
-
-  let dolore = 0;
-  let magna = 0;
-  const aliqua = new eiusmod(labore.ut(sit / ut));
-
-  while (dolore < sit) {
-    aliqua[magna++] = consectetur(
-      ipsum,
-      dolore,
-      (dolore += ut)
-    );
-  }
-
-  return aliqua;
-}
+```ts title="Imperative" file=./code/cost-calculator-snippet.imperative.ts
 ```
 
-```js
-function lorem(ipsum, dolor = 1) {
-  const sit = ipsum == null ? 0 : ipsum.sit;
-  dolor = sit - amet(dolor);
-  return sit
-    ? consectetur(ipsum, 0, dolor < 0 ? 0 : dolor)
-    : [];
-}
-
-function adipiscing(...elit) {
-  if (!elit.sit) {
-    return [];
-  }
-
-  const sed = elit[0];
-  return eiusmod.tempor(sed) ? sed : [sed];
-}
-
-function incididunt(ipsum, ut = 1) {
-  ut = labore.et(amet(ut), 0);
-  const sit = ipsum == null ? 0 : ipsum.sit;
-
-  if (!sit || ut < 1) {
-    return [];
-  }
-
-  let dolore = 0;
-  let magna = 0;
-  const aliqua = new eiusmod(labore.ut(sit / ut));
-
-  while (dolore < sit) {
-    aliqua[magna++] = consectetur(
-      ipsum,
-      dolore,
-      (dolore += ut)
-    );
-  }
-
-  return aliqua;
-}
-```
-
-```diff 1[10:14],2[15:19],3[22:27],10:12
-
+```ts title="Reactive" file=./code/cost-calculator-snippet.reactive.ts
 ```
 
 </CodeSurfer>
 
 ---
 
-<CodeSurferColumns themes={[vsDark, github]}>
+<CodeSurferColumns>
 
 <Step>
 
-```js
-const magna = aliqua => aliqua.ut((enim, ad) => enim, 0);
+```ts title="Imperative" file=./code/cost-calculator-snippet.imperative.ts
 ```
 
-```js
-const minim = (ad, enim) => dolore.magna(ad / enim);
-```
-
-</Step>
-
-<Step>
-
-```js
-const lorem = (ipsum, dolor, sit) => {
-  const amet = dolor - ipsum;
-  return consectetur.adipiscing(
-    {
-      elit: sed.eiusmod(sit - dolor) / amet + 2,
-    },
-    (tempor, incididunt) => ipsum + amet * incididunt
-  );
-};
-
-const magna = aliqua => aliqua.ut((enim, ad) => enim, 0);
-```
-
-```js
-const minim = (ad, enim) => dolore.magna(ad / enim);
-
-const sed = (eiusmod, tempor, incididunt) => {
-  const ut = tempor - eiusmod;
-  return labore.et(
-    {
-      amet: dolore.magna(incididunt - tempor) / ut + 2,
-    },
-    (aliqua, elit) => eiusmod + ut * elit
-  );
-};
+```ts title="Reactive"  file=./code/cost-calculator-snippet.reactive.ts
 ```
 
 </Step>
@@ -148,5 +208,780 @@ const sed = (eiusmod, tempor, incididunt) => {
 
 ---
 
-docs:  
-[codesurfer.pomb.us](https://codesurfer.pomb.us)
+<CodeSurfer>
+
+```ts
+const totalCost$ =
+	combineLatest([
+		this.gallonsToPurchase$,
+		this.costPerGallon$,
+]).pipe(
+	map(
+		([gallonsToPurchase, costPerGallon])
+			=> gallonsToPurchase * costPerGallon
+	),
+);
+```
+
+```ts
+const totalCost$ =  // 🙂 Hi! I'm an observable value called totalCost$
+	combineLatest([
+		this.gallonsToPurchase$,
+		this.costPerGallon$,
+]).pipe(
+	map(
+		([gallonsToPurchase, costPerGallon])
+			=> gallonsToPurchase * costPerGallon
+	),
+);
+```
+
+```ts
+const totalCost$ =  // 🙂 Hi! I'm an observable value called totalCost$
+	combineLatest([// and I'm calculated by
+		this.gallonsToPurchase$, // taking gallonsToPurchase$
+		this.costPerGallon$, // and costPerGallon$
+]).pipe(
+	map(
+		([gallonsToPurchase, costPerGallon])
+			=> gallonsToPurchase * costPerGallon
+	),
+);
+```
+
+```ts
+const totalCost$ =  // 🙂 Hi! I'm an observable value called totalCost$
+	combineLatest([// and I'm calculated by
+		this.gallonsToPurchase$, // taking gallonsToPurchase$
+		this.costPerGallon$, // and costPerGallon$
+]).pipe(
+	map(
+		([gallonsToPurchase, costPerGallon])
+			=> gallonsToPurchase * costPerGallon // and multiplying them together
+	),
+);
+```
+
+```ts
+const totalCost$ =  // 🙂 Hi! I'm an observable value called totalCost$
+	combineLatest([// and I'm calculated by
+		this.gallonsToPurchase$, // taking gallonsToPurchase$
+		this.costPerGallon$, // and costPerGallon$
+]).pipe(
+	map(
+		([gallonsToPurchase, costPerGallon])
+			=> gallonsToPurchase * costPerGallon // and multiplying them together
+	),
+);
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurferColumns>
+
+<Step>
+
+```ts
+const totalCost$ =
+	combineLatest([
+		this.gallonsToPurchase$,
+		this.costPerGallon$,
+]).pipe(
+	map(
+		([gallonsToPurchase, costPerGallon])
+			=> gallonsToPurchase * costPerGallon
+	),
+);
+```
+
+<img src={declarationDefinition} />
+
+</Step>
+
+</CodeSurferColumns>
+
+
+---
+
+# Imperative
+
+- Component properties are just buckets that hold values
+- Properties are written to by methods, which then need keep track of and update any additional dependent properties
+- No clear differentiation between independent and dependent state
+- Declaration and definition are disconnected
+  - The meaning can be distributed throughout the component or service across many functions (spaghetti code)
+- Relationships between values are unclear
+- Hard to read and understand, especialy as component grows in complexity
+
+---
+
+#  Reactive
+
+- Independent state properties are stored in an observable
+- Dependent/derived state properties are declared as observables that read from other observabes
+- Observable properties declare the value and its definition together
+- Clear differentiation between independent and dependent properties
+- Methods that update independent state properties have one job only
+  - Don't need to be aware of dependent properties or be responsible for updating them
+- Relationships between dependent values are clear, explicit, and hierarchical
+  - No spaghetti
+
+---
+
+<img src={insight} />
+
+# Key insights
+
+<Appear>
+
+- Imperatively managing propagation of change is a driver of unnecessary complexity in code.
+- Reactive programming was designed to address this problem.
+- "Observability" is the innovation that enables the automatic propagation of change.
+- Recognizing this and learning to take advantage of it is the first step towards simpler code and a better tomorrow.
+
+</Appear>
+
+
+
+
+---
+
+# Is Angular a reactive framework?
+
+<CodeSurferColumns>
+
+
+<Step>
+
+Yes and no. <br/> Actually, it has a split personality
+
+<img src={split} />
+
+</Step>
+
+
+<Step>
+
+| | Imperative | Reactive |
+|--- |---	|---	|
+| | Inputs | HttpClient |
+| | ViewChildren |  Router Events |
+| | NgOnChanges | Route Params  |
+| |  Template driven forms	| Reactive Forms *  |
+
+<img src={split} />
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+# Why was Angular <br/> designed this way?
+
+<Appear>
+
+A set of compromises intended to balance:
+
+- The power of reactive programming
+- Ability for new Angular developers to learn the framework
+
+</Appear>
+
+---
+
+# Where does this leave us?
+
+<Appear>
+
+### Angular apps that are commonly  an incoherent  <br/> mishmash of imperative and reactive styles
+
+- Templates where some bindings use async pipe and others do not in seemingly random pattern
+- Some observable properties are used both reactively and unreactively at the same time:
+  - Bound to template with `async` pipe
+  - Also subscribed to in the component to be combined with non-observable data to imperatively compute additional dependent values
+- Need to explicitly manage subscriptions/unsubscription
+- Vulnerable to pitfalls when using onPush change detection
+
+</Appear>
+
+---
+
+# This is not your fault!
+
+<Appear>
+
+- Most Angular documentation, courses, etc teaches you this way
+- Until recently there wasn't a really great way<br/>to make the non-reactive parts more reactive
+
+
+<img src={subscribe} />
+
+
+</Appear>
+
+---
+
+# How do we fix this?
+
+<Appear>
+
+<img src={noHalfMeasures} />
+
+### Time to get _radically_ reactive
+
+</Appear>
+
+---
+
+# How do we fix this?
+
+
+- Unlearn much of what we've been taught
+- Adopt a new way of thinking
+- Stop using non-reactive patterns, even if you've<br/> seen them in the Angular docs or other sources
+- Think of imperative patterns as training wheels <br/> to learn Angular, then graduate away from it
+- Start using _ComponentStore_ <br/>to help make components reactive
+
+
+---
+
+
+# ComponentStore
+
+<Appear>
+
+- What is it and how will it change my life?
+
+</Appear>
+
+---
+
+<CodeSurfer>
+
+```ts file=./code/cost-calculator-snippet.reactive.ts
+```
+
+```ts file=./code/cost-calculator.component.0.ts
+```
+
+```ts file=./code/cost-calculator.component.1.ts
+```
+
+```ts file=./code/cost-calculator.component.2.ts
+```
+
+```ts 21:23 file=./code/cost-calculator.component.2.ts
+```
+
+```ts file=./code/cost-calculator.component.3.ts
+```
+
+```ts 10:11 file=./code/cost-calculator.component.3.ts
+```
+
+```ts file=./code/cost-calculator.component.4.ts
+```
+
+```ts  30 file=./code/cost-calculator.component.4.ts
+```
+
+```ts file=./code/cost-calculator.component.5.ts
+```
+
+```ts file=./code/cost-calculator.component.5.ts
+```
+
+</CodeSurfer>
+
+---
+
+# What ComponentStore gives us
+
+<Appear>
+
+- A built-in observable called state$ for storing all _independent_ component values in a consolidated place
+  - A "home" for _independent_ component properties
+- Utility functions for updating and selecting values from the state$
+- Utility function for creating effects which provide reactive api for side effects
+
+</Appear>
+
+---
+
+# What about those non-observable <br/> parts of Angular, like inputs?
+
+---
+
+# Use this one weird trick<br/>to make your components<br/>more reactive!
+
+<Appear>
+
+- Using setters with Angular decorators
+
+```ts
+@Input()
+set someInput(someValue : someType) {
+    this.setSomeValue(someValue)
+}
+```
+
+(Also works with ViewChildren, etc.)
+
+</Appear>
+
+---
+
+<CodeSurfer>
+
+```ts file=./code/cost-calculator.component.5.ts
+```
+
+```ts file=./code/cost-calculator.component.6.ts
+```
+
+```ts file=./code/cost-calculator.component.7.ts
+```
+
+```ts file=./code/cost-calculator.component.8.ts
+```
+
+```ts file=./code/cost-calculator.component.9.ts
+```
+
+```ts file=./code/cost-calculator.component.10.ts
+```
+
+```ts file=./code/cost-calculator.component.10.ts
+```
+
+</CodeSurfer>
+
+---
+
+#  Composing observables
+
+
+<Appear>
+
+- Combine all observable data to be used in the component's template into a single observable "view model" called vm$
+- Subscribe to vm$ in the template once using async pipe at the component root
+- Reference the subscribed view model everywhere else in the template
+- Avoid any other template bindings that don't use this pattern
+
+###  Watch  [Data Composition with RxJS](https://www.youtube.com/watch?v=Z76QlSpYcck) by Deborah Kurata
+
+</Appear>
+
+---
+
+<CodeSurfer>
+
+```ts file=./code/cost-calculator.component.10.ts
+```
+
+```ts file=./code/cost-calculator.component.11.ts
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurferColumns>
+
+<Step>
+
+```ts 34:42 title="cost-calculator.component.ts" file=./code/cost-calculator.component.11.ts
+```
+
+```html title="cost-calculator.component.html"  file=./code/cost-calculator.component.html
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+# Effects
+
+### Effects are designed to extract any side-effects (such as Network calls) from components and handle potential race conditions.
+
+<Appear>
+
+- Effects isolate side effects from components, allowing for more pure components that select state and trigger updates and/or effects in ComponentStore(s).
+- Effects are Observables listening for the inputs and piping them through the "prescription".
+- Those inputs can either be values or Observables of values.
+- Effects perform tasks, which are synchronous or asynchronous.
+
+</Appear>
+
+---
+
+<CodeSurfer>
+
+```ts file=./code/cost-calculator.component.11.ts
+```
+
+```ts file=./code/cost-calculator.component.12.ts
+```
+
+```ts file=./code/cost-calculator.component.13.ts
+```
+
+</CodeSurfer>
+
+---
+
+#  Avoid subscribing explicitly
+
+<Appear>
+
+### You can build an entire Angular app using RxJS everywhere without ever using the word "susbscribe"
+
+- Use the async pipe for template bindings
+- Use effects (Store or ComponentStore) to execute actions
+
+These things use subscriptions internally.
+
+They also manage ubsubscription, so you don't have to!
+
+</Appear>
+
+---
+
+# [A live  example](https://stackblitz.com/edit/ngrx-component-store-code-samples)
+
+---
+
+# ComponentStore Usage Patterns
+
+### [ComponentStore as part of the component](https://ngrx.io/guide/component-store/usage#example-1-componentstore-as-part-of-the-component)
+
+vs.
+
+### [Service extending ComponentStore](https://ngrx.io/guide/component-store/usage#example-2-service-extending-componentstore)
+
+<Appear>
+
+"I wish I had never put that (Example 1) in the documentation"<br/>
+-Alex Okrushko
+
+</Appear>
+
+---
+
+### Service extending ComponentStore
+
+<Appear>
+
+<table>
+
+<tr>
+<td></td>
+<td>component.ts</td>
+<td>component.store.ts</td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+
+- Diminished role
+  - Only job is wiring up bindings between template, inputs, outputs and store
+- Only injected provider is the store
+
+</td>
+<td>
+
+- All logic for component lives here
+  - Embodied in selectors, updaters and effects
+- All additional services, providers needed by the component get injected here
+  - Referenced by selectors and effects
+
+</td>
+</tr>
+
+</table>
+
+</Appear>
+
+---
+
+# Testing
+
+
+<Appear>
+
+<table>
+
+<tr>
+<td></td>
+<td>component.ts</td>
+<td>component.store.ts</td>
+</tr>
+
+
+
+<tr>
+<td></td>
+<td>
+
+- Instantiate and test using ATL
+- Only need to test that selectors, updaters, effects in store are being called
+
+</td>
+<td>
+
+- Instantiate and test using <br/> `new SomeComponentStore(...providers)`
+- Selectors, updaters, effects are tested like any other methods
+ - Clear division of responsibility makes testing easy
+
+</td>
+</tr>
+
+
+</table>
+
+</Appear>
+
+---
+
+# Sharing stores between components
+
+- Take advantage of Angular's [hierarchical dependency injection](https://angular.io/guide/hierarchical-dependency-injection) system to share ComponentStores with child/descendent components
+- Can use a shared ComponentStore for a complex component built up of multiple child components, or an entire feature
+
+---
+
+<CodeSurferColumns>
+
+<Step>
+
+```ts
+@Component({
+  selector: 'parent',
+  templateUrl: './parent.component.html',
+  providers: [ParentStore],
+})
+export class ParentComponent {
+  constructor(
+    readonly store: ParentStore
+  )
+}
+```
+
+```ts
+@Component({
+  selector: 'child',
+  templateUrl: './child.component.html',
+})
+export class ChildComponent {
+  constructor(
+    readonly store: ParentStore
+  )
+}
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+# Additional observations
+
+<Appear>
+
+- Apps look very different when you use reactive patterns
+- May be disorienting at first but much more readable once you get used to it
+- Less dependence on lifecycle hooks
+- All component properties are readonly
+
+</Appear>
+
+---
+
+# Diminished use of <br/>Angular lifecycle hooks
+
+<Appear>
+
+### Rarely (if ever) need to use:
+
+ - NgOnInit
+ - AfterViewInit
+ - NgOnChanges
+ - NgOnDestroy
+ - etc.
+
+These timing events don't matter when your code<br/>
+is oriented around when observabes emit values
+
+</Appear>
+
+---
+
+# Readonliness
+
+### All component properties are always readonly
+
+
+<CodeSurfer>
+
+```ts
+// This is an antipattern
+this.someProperty = someValue;
+```
+
+</CodeSurfer>
+
+(Is _that_ radical?)
+
+---
+
+# Readonliness
+
+<CodeSurferColumns>
+
+<Steps>
+
+<div>
+  <h3> Imperative Code </h3>
+  <ul>
+   <li>Has moving parts: properties of components/services change</li>
+   <li>Imperative methods push data around</li>
+  </ul>
+</div>
+
+ <img src={rubeGoldbergMechanical} />
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Readonliness
+
+<CodeSurferColumns>
+
+<Steps>
+
+
+<div>
+  <h3> Reactive code</h3>
+  <ul>
+    <li> Components and services don't have moving parts</li>
+    <li> Data flows through the app in observable streams</li>
+    <li> Observable terminology: "streams", data$, pipe(), tap()</li>
+  </ul>
+</div>
+
+ <img src={rubeGoldbergFluid} />
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Readonliness
+
+- Always make readonliness explicit in declarations
+- Scan for non-readonly component properties in code review
+  - (code smell)
+
+
+---
+
+# When/Where should I<br/>use ComponentStore?
+
+<Appear>
+
+- Every _smart_ component should use ComponentStore
+- Purely presentational (dumb) components don't need it
+- Rule of thumb:
+  - If you are considering writing `this.someProperty = someValue`,<br/> stop yourself and add ComponentStore
+- ComponentStore is lightweight and performant.
+  - Don't worry about having too many ComponentStores
+
+</Appear>
+
+---
+
+# [Reactive style guide](https://jaufgang.github.io/reactive-angular-style-guide/)
+
+<Appear>
+
+- Strongly opinionated
+- Consistent - every component service looks the same
+- Incomplete
+   - Still needs a lot of work
+
+</Appear>
+
+---
+
+# Advantages of radically reactive approach
+
+<Appear>
+
+### Components are structured in a consistent and predictable way:
+
+- All app logic is organized the same way for every component/store
+  - Selectors, updaters, effects
+- Template binding always use async pipe
+  - Only one async pipe for each component using vm$
+- Never explicitly subscribing means never needing to explicitly unsubscribe.
+- Automatic propagation of change results in simpler code
+- Take advantage of OnPush change detection
+
+</Appear>
+
+---
+
+# Pitfalls/ Downsides
+
+- Training / learning curve
+- Unfamiliar. Might feel weird at first and be a challenge getting used to
+- More code files for each component
+
+---
+
+### "But we already have a large codebase that doesn't use these patterns"
+
+<Appear>
+
+- This pattern lends itself to refactoring component by component, feature by feature
+
+</Appear>
+
+---
+
+# Recap
+
+<Appear>
+
+- Reactive programming is a _programming paradigm_ that can simplify app architecture by streamlining _propagation of change_.
+- ComponentStore provides a solid foundation for adopting reactive patterns consistently throughout an Angular app
+- Use it to help "Observable all the things"
+- Add ComponentStore to every (smart) component
+- Put all component app logic in ComponentStore
+- Use effects for component methods that have side effects
+- Make all component properties `readonly`
+- Use vm$ and a single async pipe in all components
+- Avoid explicit subscriptions
+- Enjoy life more
+
+</Appear>
+
+---
+
+# Does this feel radical to you or nah?
+
+### What do you think?
+
+
+
